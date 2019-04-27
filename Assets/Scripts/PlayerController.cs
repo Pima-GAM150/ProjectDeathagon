@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         {
             transform.GetComponent<PlayerProperties>().currentIncome = 200;
             transform.GetComponent<PlayerProperties>().currentWallet = 200;
-            playerNumberText.text = "Player: " + playerNumber + 1;
+            playerNumberText.text = "Player: " + playerNumber;
             UnitSpawner.find.player = transform;
             UnitSpawner.find.arenaSpawns.Add(UnitSpawner.find.unitSpawnsOne);
             UnitSpawner.find.arenaSpawns.Add(UnitSpawner.find.unitSpawnsTwo);

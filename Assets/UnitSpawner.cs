@@ -33,8 +33,11 @@ public class UnitSpawner : MonoBehaviour
         return new Vector3(UnityEngine.Random.Range(spawnBounds.min.x, spawnBounds.max.x), UnityEngine.Random.Range(spawnBounds.min.y, spawnBounds.max.y), UnityEngine.Random.Range(spawnBounds.min.z, spawnBounds.max.z));
     }
 
+    [PunRPC]
     public void SpawnCreeps(List<int> creeplist,int playerNumber)
     {
+        Debug.Log(playerNumber);
+        Debug.Log(NetworkedObjectsH.find.myPlayerNumber);
         int counter = 0;
         if (playerNumber == NetworkedObjectsH.find.myPlayerNumber && creeplist.Count > 0)
         {

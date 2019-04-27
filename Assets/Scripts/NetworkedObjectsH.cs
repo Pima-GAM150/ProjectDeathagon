@@ -70,30 +70,23 @@ public class NetworkedObjectsH : MonoBehaviour
     public void AddPlayer(PhotonView player)
     {
         // add a player to the list of all tracked players
-        myPlayerNumber = players.Count;
         players.Add(player);
-        players[players.Count - 1].GetComponent<PlayerProperties>().playerNumber = myPlayerNumber;
         creepList.Add(new List<int>());
-        Debug.Log(myPlayerNumber);
-
         // only the "server" has authority over which color the player should be and its seed
+        
         if (PhotonNetwork.IsMasterClient)
         {
             player.RPC("SetColor", RpcTarget.AllBuffered, players.Count - 1); // buffer the color change so it applies to new arrivals in the room
             player.RPC("SetPosition", RpcTarget.AllBuffered, spawnPos[players.Count - 1].position);
+            player.RPC("SetPlayerNumber", RpcTarget.AllBuffered, players.Count);
         }
     }
 
     public void RemoveMe(int playerNumber)
     {
         if (playerNumber > myPlayerNumber) myPlayerNumber--;
-        players.RemoveAt(playerNumber);
-        creepList.RemoveAt(playerNumber);
-    }
-
-    public void AddToCreepList(int playerNumber,int creep)
-    {
-        players[0].RPC("AddToMasterCreepList", RpcTarget.All, playerNumber, creep);
+        players.RemoveAt(playerNumber - 1);
+        creepList.RemoveAt(playerNumber - 1);
     }
 
     public void AddToMasterCreepList(int playerNumber,int creep)

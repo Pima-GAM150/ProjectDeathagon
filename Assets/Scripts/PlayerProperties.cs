@@ -8,10 +8,15 @@ using Photon.Realtime;
 
 public class PlayerProperties : MonoBehaviourPun
 {
-    public int playerNumber;
+    public int playerNumber { get; set; }
     public int currentWallet;
     public float currentIncome { get; set; }
     public float playerBulletDamage = 25;
+
+    private void Start()
+    {
+        if (photonView.IsMine) UnitSpawner.find.player = transform;
+    }
 
     public void KillEnemy(int worth)
     {
@@ -22,9 +27,10 @@ public class PlayerProperties : MonoBehaviourPun
     {
         if (currentWallet >= 50)
         {
-            NetworkedObjectsH.find.AddToCreepList(playerNumber, 1);
+            
             if (photonView.IsMine)
             {
+                NetworkedObjectsH.find.AddToMasterCreepList(playerNumber - 1, 1);
                 currentWallet -= 50;
                 currentIncome += 20;
             }
@@ -35,5 +41,13 @@ public class PlayerProperties : MonoBehaviourPun
     public void PayPlayers()
     {
         currentWallet += Mathf.RoundToInt(currentIncome);
+    }
+
+    [PunRPC]
+    public void SetPlayerNumber(int number)
+    {
+        Debug.Log(number);
+        playerNumber = number;
+        GetComponent<PlayerController>().playerNumber = number;
     }
 }
