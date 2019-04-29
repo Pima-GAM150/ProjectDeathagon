@@ -10,4 +10,9 @@ public class Player : MonoBehaviourPun, IPunInstantiateMagicCallback
 	public void OnPhotonInstantiate( PhotonMessageInfo info ) {
 		NetworkedObjectsH.find.AddPlayer( this.photonView ); // when the player is created, add it to a list of all players on the singleton
 	}
+
+    private void OnDestroy()
+    {
+        
+    }
 }

@@ -2224,6 +2224,7 @@ MonoBehaviour:
   player: {fileID: 0}
   creepPrefabList:
   - {fileID: 7391880714345584656, guid: 26ba3215d56e8344296a2dccef2a1102, type: 3}
+  - {fileID: 8485134069854361907, guid: 5de68f5490f294d409dfa5a958cf5222, type: 3}
   unitSpawnsOne:
   - {fileID: 766570350}
   - {fileID: 1798915829}

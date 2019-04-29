@@ -46,6 +46,7 @@ public class UnitSpawner : MonoBehaviour
                 GameObject creepToSpawn = Instantiate(creepPrefabList[creeplist[i]-1]);
                 creepToSpawn.transform.position = GetCreepSpawn(arenaSpawns[playerNumber][counter].bounds);
                 creepToSpawn.GetComponent<Level1Enemy>().SetDestination(player.transform);
+                creepToSpawn.GetComponent<Level2Enemy>().SetDestination(player.transform);
                 if (counter == 4) counter = 0;
                 else counter++;
             }

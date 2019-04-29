@@ -37,6 +37,20 @@ public class PlayerProperties : MonoBehaviourPun
         } 
     }
 
+    public void SpawnLevel2()
+    {
+        if (currentWallet >= 100)
+        {
+
+            if (photonView.IsMine)
+            {
+                NetworkedObjectsH.find.AddToMasterCreepList(playerNumber - 1, 2);
+                currentWallet -= 100;
+                currentIncome += 40;
+            }
+        }
+    }
+
     [PunRPC]
     public void PayPlayers()
     {
