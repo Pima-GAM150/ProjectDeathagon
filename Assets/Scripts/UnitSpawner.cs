@@ -44,6 +44,7 @@ public class UnitSpawner : MonoBehaviour
                 GameObject creepToSpawn = Instantiate(creepPrefabList[creeplist[i]]);
                 creepToSpawn.transform.position = GetCreepSpawn(arenaSpawns[playerNumber][counter].bounds);
                 creepToSpawn.GetComponent<UnityEngine.AI.NavMeshAgent>().Warp(creepToSpawn.transform.position);
+                creepToSpawn.GetComponent<UnityEngine.AI.NavMeshAgent>().speed = creepToSpawn.GetComponent<Level1Enemy>().speed;
                 creepToSpawn.GetComponent<Level1Enemy>().SetDestination(NetworkedObjectsH.find.players[playerNumber].transform);
                 
                 if (counter == 4) counter = 0;
