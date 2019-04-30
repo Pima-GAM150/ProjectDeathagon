@@ -42,8 +42,6 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         {
             transform.GetComponent<PlayerProperties>().currentIncome = 200;
             transform.GetComponent<PlayerProperties>().currentWallet = 200;
-            playerNumberText.text = "Player: " + playerNumber;
-            UnitSpawner.find.player = transform;
             UnitSpawner.find.arenaSpawns.Add(UnitSpawner.find.unitSpawnsOne);
             UnitSpawner.find.arenaSpawns.Add(UnitSpawner.find.unitSpawnsTwo);
             UnitSpawner.find.arenaSpawns.Add(UnitSpawner.find.unitSpawnsThree);
@@ -63,7 +61,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     // Update is called once per frame
     void Update()
     {
-        
+        playerNumberText.text = "Player: " + playerNumber;
         if (photonView.IsMine)
         {
             NavMeshTarget.position = target.position;
@@ -138,7 +136,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
     private void OnDestroy()
     {
-        NetworkedObjectsH.find.RemoveMe(playerNumber);
+        NetworkedObjectsH.find.RemoveMe(playerNumber - 1);
     }
 
     [PunRPC]

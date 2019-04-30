@@ -30,23 +30,22 @@ public class UnitSpawner : MonoBehaviour
 
     public Vector3 GetCreepSpawn(Bounds spawnBounds)
     {
-        return new Vector3(UnityEngine.Random.Range(spawnBounds.min.x, spawnBounds.max.x), UnityEngine.Random.Range(spawnBounds.min.y, spawnBounds.max.y), UnityEngine.Random.Range(spawnBounds.min.z, spawnBounds.max.z));
+        return new Vector3(UnityEngine.Random.Range(spawnBounds.min.x, spawnBounds.max.x), spawnBounds.center.y, UnityEngine.Random.Range(spawnBounds.min.z, spawnBounds.max.z));
     }
 
     [PunRPC]
     public void SpawnCreeps(List<int> creeplist,int playerNumber)
     {
-        Debug.Log(playerNumber);
-        Debug.Log(NetworkedObjectsH.find.myPlayerNumber);
         int counter = 0;
-        if (playerNumber == NetworkedObjectsH.find.myPlayerNumber && creeplist.Count > 0)
+        //if (NetworkedObjectsH.find.players[playerNumber].GetComponent<PlayerProperties>().playerNumber - 1 == playerNumber && creeplist.Count > 0)
         {
             for (int i = 0; i < creeplist.Count; i++)
             {
-                GameObject creepToSpawn = Instantiate(creepPrefabList[creeplist[i]-1]);
+                GameObject creepToSpawn = Instantiate(creepPrefabList[creeplist[i]]);
                 creepToSpawn.transform.position = GetCreepSpawn(arenaSpawns[playerNumber][counter].bounds);
-                creepToSpawn.GetComponent<Level1Enemy>().SetDestination(player.transform);
-                creepToSpawn.GetComponent<Level2Enemy>().SetDestination(player.transform);
+                creepToSpawn.GetComponent<UnityEngine.AI.NavMeshAgent>().Warp(creepToSpawn.transform.position);
+                creepToSpawn.GetComponent<Level1Enemy>().SetDestination(NetworkedObjectsH.find.players[playerNumber].transform);
+                
                 if (counter == 4) counter = 0;
                 else counter++;
             }

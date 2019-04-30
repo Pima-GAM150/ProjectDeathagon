@@ -76,6 +76,7 @@ public class NetworkedObjectsH : MonoBehaviour
         
         if (PhotonNetwork.IsMasterClient)
         {
+            Debug.Log(players.Count);
             player.RPC("SetColor", RpcTarget.AllBuffered, players.Count - 1); // buffer the color change so it applies to new arrivals in the room
             player.RPC("SetPosition", RpcTarget.AllBuffered, spawnPos[players.Count - 1].position);
             player.RPC("SetPlayerNumber", RpcTarget.AllBuffered, players.Count);

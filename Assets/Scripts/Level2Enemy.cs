@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class Level2Enemy : Level1Enemy
 {
-    public Level2Enemy()
+
+    private void Start()
     {
-        this.HitPoints = 50;
-        this.speed = 2;
-        this.worth = 10;
+        this.HitPoints = 80;
+        this.speed = 3;
+        this.worth = 20;
     }
 }
