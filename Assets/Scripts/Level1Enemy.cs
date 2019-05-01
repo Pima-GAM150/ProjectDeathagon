@@ -2,17 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Level1Enemy : MonoBehaviour
+using Photon.Pun;
+
+public class Level1Enemy : MonoBehaviourPun , IPunObservable
 {
     public UnityEngine.AI.NavMeshAgent agent;
 
     public Transform Destination;
+
+    public Transform appearance;
+
+    private Transform target;
 
     public float HitPoints;
 
     public float speed;
 
     public float worth;
+
+    Vector3 lastSyncedPos;
 
     public Level1Enemy()
     {
@@ -24,7 +32,9 @@ public class Level1Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        target = transform;
         agent.destination = Destination.position;
+        appearance.position = Vector3.Lerp(appearance.position, target.position, speed * Time.deltaTime);
     }
 
     public void SetDestination(Transform destination)
@@ -42,4 +52,27 @@ public class Level1Enemy : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+
+            // don't send redundant data, like an unchanged position, over the network
+            if (lastSyncedPos != transform.position)
+            {
+                lastSyncedPos = transform.position;
+
+                // since there is new position data, serialize it to the data stream
+                stream.SendNext(transform.position);
+            }
+        }
+        else
+        {
+            // receive data from the stream in *the same order* in which it was originally serialized
+            transform.position = (Vector3)stream.ReceiveNext();
+        }
+    }
+
+    public PhotonView getThisPhotonView() { return this.photonView; }
 }

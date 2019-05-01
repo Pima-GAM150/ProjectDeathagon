@@ -10,7 +10,8 @@ public class UnitSpawner : MonoBehaviour
 {
     public Transform player;
 
-    public List<GameObject> creepPrefabList;
+    public List<List<PhotonView>> aliveCreeps = new List<List<PhotonView>>();
+
     public List<BoxCollider> unitSpawnsOne;
     public List<BoxCollider> unitSpawnsTwo;
     public List<BoxCollider> unitSpawnsThree;
@@ -33,19 +34,19 @@ public class UnitSpawner : MonoBehaviour
         return new Vector3(UnityEngine.Random.Range(spawnBounds.min.x, spawnBounds.max.x), spawnBounds.center.y, UnityEngine.Random.Range(spawnBounds.min.z, spawnBounds.max.z));
     }
 
-    [PunRPC]
+    //[PunRPC]
     public void SpawnCreeps(List<int> creeplist,int playerNumber)
     {
         int counter = 0;
-        //if (NetworkedObjectsH.find.players[playerNumber].GetComponent<PlayerProperties>().playerNumber - 1 == playerNumber && creeplist.Count > 0)
+        if (PhotonNetwork.IsMasterClient && creeplist.Count > 0)
         {
             for (int i = 0; i < creeplist.Count; i++)
             {
-                GameObject creepToSpawn = Instantiate(creepPrefabList[creeplist[i]]);
-                creepToSpawn.transform.position = GetCreepSpawn(arenaSpawns[playerNumber][counter].bounds);
+                GameObject creepToSpawn = PhotonNetwork.Instantiate("Level"+creeplist[i].ToString(), GetCreepSpawn(arenaSpawns[playerNumber][counter].bounds),Quaternion.identity,0);
                 creepToSpawn.GetComponent<UnityEngine.AI.NavMeshAgent>().Warp(creepToSpawn.transform.position);
                 creepToSpawn.GetComponent<UnityEngine.AI.NavMeshAgent>().speed = creepToSpawn.GetComponent<Level1Enemy>().speed;
                 creepToSpawn.GetComponent<Level1Enemy>().SetDestination(NetworkedObjectsH.find.players[playerNumber].transform);
+                aliveCreeps[playerNumber].Add(creepToSpawn.GetComponent<Level1Enemy>().getThisPhotonView());
                 
                 if (counter == 4) counter = 0;
                 else counter++;

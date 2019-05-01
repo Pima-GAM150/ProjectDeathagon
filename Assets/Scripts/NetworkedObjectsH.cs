@@ -42,18 +42,21 @@ public class NetworkedObjectsH : MonoBehaviour
     private void Update()
     {
         waveTimer -= Time.deltaTime;
-        if (PhotonNetwork.IsMasterClient)
+        if (waveTimer <= 0)
         {
-            if (waveTimer <= 0)
+            if (PhotonNetwork.IsMasterClient)
             {
                 for(int i = 0; i < players.Count; i++)
                 {
                     players[i].RPC("PayPlayers", RpcTarget.All);
                     players[i].RPC("SyncWaveTimer", RpcTarget.All,30);
 
-                    if (i == 0) players[i].RPC("SpawnCreeps", RpcTarget.All, CreepList.MakeCreepListJson(creepList[players.Count - 1]), i);
-                    else if (i == players.Count - 1) players[players.Count - 1].RPC("SpawnCreeps", RpcTarget.All, CreepList.MakeCreepListJson(creepList[i - 1]), i);
-                    else players[i].RPC("SpawnCreeps", RpcTarget.All, CreepList.MakeCreepListJson(creepList[i - 1]), i);
+                    //if (i == 0) players[i].RPC("SpawnCreeps", RpcTarget.All, CreepList.MakeCreepListJson(creepList[players.Count - 1]), i);
+                    //else if (i == players.Count - 1) players[players.Count - 1].RPC("SpawnCreeps", RpcTarget.All, CreepList.MakeCreepListJson(creepList[i - 1]), i);
+                    //else players[i].RPC("SpawnCreeps", RpcTarget.All, CreepList.MakeCreepListJson(creepList[i - 1]), i);
+
+                    if (i == 0) UnitSpawner.find.SpawnCreeps(creepList[players.Count - 1], i);
+                    else UnitSpawner.find.SpawnCreeps(creepList[i - 1], i);
                 }
                 for (int i = 0; i < creepList.Count; i++)
                 {
@@ -80,6 +83,7 @@ public class NetworkedObjectsH : MonoBehaviour
             player.RPC("SetColor", RpcTarget.AllBuffered, players.Count - 1); // buffer the color change so it applies to new arrivals in the room
             player.RPC("SetPosition", RpcTarget.AllBuffered, spawnPos[players.Count - 1].position);
             player.RPC("SetPlayerNumber", RpcTarget.AllBuffered, players.Count);
+            UnitSpawner.find.aliveCreeps.Add(new List<PhotonView>());
         }
     }
 
