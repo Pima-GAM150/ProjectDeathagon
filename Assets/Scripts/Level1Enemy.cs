@@ -51,7 +51,8 @@ public class Level1Enemy : MonoBehaviourPun , IPunObservable, IPunInstantiateMag
         if (HitPoints <= 0)
         {
             Destination.GetComponent<PlayerProperties>().KillEnemy(10);
-            Destroy(this.gameObject);
+
+            photonView.RPC("DestroyMe", RpcTarget.MasterClient);
         }
     }
 
@@ -82,5 +83,11 @@ public class Level1Enemy : MonoBehaviourPun , IPunObservable, IPunInstantiateMag
     {
         agent.Warp(transform.position);
         agent.speed = this.speed;
+    }
+
+    [PunRPC]
+    public void DestroyMe()
+    {
+        PhotonNetwork.Destroy(this.gameObject);
     }
 }
