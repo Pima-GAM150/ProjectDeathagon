@@ -4,7 +4,7 @@ using UnityEngine;
 
 using Photon.Pun;
 
-public class Level1Enemy : MonoBehaviourPun , IPunObservable
+public class Level1Enemy : MonoBehaviourPun , IPunObservable, IPunInstantiateMagicCallback
 {
     public UnityEngine.AI.NavMeshAgent agent;
 
@@ -37,9 +37,11 @@ public class Level1Enemy : MonoBehaviourPun , IPunObservable
         appearance.position = Vector3.Lerp(appearance.position, target.position, speed * Time.deltaTime);
     }
 
-    public void SetDestination(Transform destination)
+    [PunRPC]
+    public void SetDestination(int destination)
     {
-        Destination = destination;
+        Destination = NetworkedObjectsH.find.players[destination].transform;
+        UnitSpawner.find.aliveCreeps[destination].Add(this.photonView);
     }
 
     void OnTriggerEnter(Collider col)
@@ -75,4 +77,10 @@ public class Level1Enemy : MonoBehaviourPun , IPunObservable
     }
 
     public PhotonView getThisPhotonView() { return this.photonView; }
+
+    public void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+        agent.Warp(transform.position);
+        agent.speed = this.speed;
+    }
 }

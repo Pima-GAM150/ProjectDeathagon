@@ -30,7 +30,7 @@ public class PlayerProperties : MonoBehaviourPun
             
             if (photonView.IsMine)
             {
-                NetworkedObjectsH.find.AddToMasterCreepList(playerNumber - 1, 0);
+                NetworkedObjectsH.find.photonView.RPC( "AddToMasterCreepList", RpcTarget.MasterClient, playerNumber - 1, 0);
                 currentWallet -= 50;
                 currentIncome += 20;
             }
@@ -44,7 +44,7 @@ public class PlayerProperties : MonoBehaviourPun
 
             if (photonView.IsMine)
             {
-                NetworkedObjectsH.find.AddToMasterCreepList(playerNumber - 1, 1);
+                NetworkedObjectsH.find.photonView.RPC("AddToMasterCreepList", RpcTarget.MasterClient, playerNumber - 1, 1);
                 currentWallet -= 100;
                 currentIncome += 40;
             }

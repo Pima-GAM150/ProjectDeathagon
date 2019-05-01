@@ -31,22 +31,19 @@ public class UnitSpawner : MonoBehaviour
 
     public Vector3 GetCreepSpawn(Bounds spawnBounds)
     {
-        return new Vector3(UnityEngine.Random.Range(spawnBounds.min.x, spawnBounds.max.x), spawnBounds.center.y, UnityEngine.Random.Range(spawnBounds.min.z, spawnBounds.max.z));
+        return new Vector3(UnityEngine.Random.Range(spawnBounds.min.x, spawnBounds.max.x), spawnBounds.center.y - 3, UnityEngine.Random.Range(spawnBounds.min.z, spawnBounds.max.z));
     }
 
     //[PunRPC]
     public void SpawnCreeps(List<int> creeplist,int playerNumber)
     {
         int counter = 0;
-        if (PhotonNetwork.IsMasterClient && creeplist.Count > 0)
+        if (creeplist.Count > 0)
         {
             for (int i = 0; i < creeplist.Count; i++)
             {
                 GameObject creepToSpawn = PhotonNetwork.Instantiate("Level"+creeplist[i].ToString(), GetCreepSpawn(arenaSpawns[playerNumber][counter].bounds),Quaternion.identity,0);
-                creepToSpawn.GetComponent<UnityEngine.AI.NavMeshAgent>().Warp(creepToSpawn.transform.position);
-                creepToSpawn.GetComponent<UnityEngine.AI.NavMeshAgent>().speed = creepToSpawn.GetComponent<Level1Enemy>().speed;
-                creepToSpawn.GetComponent<Level1Enemy>().SetDestination(NetworkedObjectsH.find.players[playerNumber].transform);
-                aliveCreeps[playerNumber].Add(creepToSpawn.GetComponent<Level1Enemy>().getThisPhotonView());
+                creepToSpawn.GetComponent<PhotonView>().RPC("SetDestination", RpcTarget.All, playerNumber);
                 
                 if (counter == 4) counter = 0;
                 else counter++;

@@ -41,5 +41,6 @@ MonoBehaviour:
   - SyncWaveTimer
   - AddToMasterCreepList
   - SetPlayerNumber
+  - SetDestination
   DisableAutoOpenWizard: 1
   ShowSettings: 1

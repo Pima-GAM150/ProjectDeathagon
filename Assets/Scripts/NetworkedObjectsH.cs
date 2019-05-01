@@ -7,7 +7,7 @@ using Photon.Pun;
 using Photon.Realtime;
 
 
-public class NetworkedObjectsH : MonoBehaviour
+public class NetworkedObjectsH : MonoBehaviourPun
 {
     public Transform[] spawnPos = new Transform[8];
 
@@ -94,9 +94,11 @@ public class NetworkedObjectsH : MonoBehaviour
         creepList.RemoveAt(playerNumber - 1);
     }
 
+    [PunRPC]
     public void AddToMasterCreepList(int playerNumber,int creep)
     {
-        if (PhotonNetwork.IsMasterClient) creepList[playerNumber].Add(creep);
+        Debug.Log("Added");
+        creepList[playerNumber].Add(creep);
     }
 
     public void SyncWaveTimer(int timer)

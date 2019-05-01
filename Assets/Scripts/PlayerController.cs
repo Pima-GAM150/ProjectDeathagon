@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             UnitSpawner.find.arenaSpawns.Add(UnitSpawner.find.unitSpawnsFive);
             UnitSpawner.find.arenaSpawns.Add(UnitSpawner.find.unitSpawnsSix);
             UnitSpawner.find.arenaSpawns.Add(UnitSpawner.find.unitSpawnsSeven);
-            UnitSpawner.find.arenaSpawns.Add(UnitSpawner.find.unitSpawnsEight);
+            UnitSpawner.find.arenaSpawns.Add(UnitSpawner.find.unitSpawnsEight);        
         }
         else
         {
