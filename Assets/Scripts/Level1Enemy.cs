@@ -35,6 +35,7 @@ public class Level1Enemy : MonoBehaviourPun , IPunObservable, IPunInstantiateMag
         target = transform;
         agent.destination = Destination.position;
         appearance.position = Vector3.Lerp(appearance.position, target.position, speed * Time.deltaTime);
+        agent.speed = this.speed;
     }
 
     [PunRPC]
@@ -81,7 +82,6 @@ public class Level1Enemy : MonoBehaviourPun , IPunObservable, IPunInstantiateMag
     public void OnPhotonInstantiate(PhotonMessageInfo info)
     {
         agent.Warp(transform.position);
-        agent.speed = this.speed;
     }
 
     [PunRPC]

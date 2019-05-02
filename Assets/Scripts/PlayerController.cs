@@ -23,6 +23,10 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     public Text textFireRate;
     public Text textBulletDamage;
     public Text textAmmoCapacity;
+    public Text buttonTextReloadSpeed;
+    public Text buttonTextFireRate;
+    public Text buttonTextBulletDamage;
+    public Text buttonTextAmmoCapacity;
 
     public UnityEngine.AI.NavMeshAgent agent;
 
@@ -80,7 +84,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         playerNumberText.text = "Player: " + playerNumber;
         if (photonView.IsMine)
         {
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetKeyDown(KeyCode.Q) && !panelUpgrades.gameObject.activeInHierarchy)
             {
                 if (!panelSendCreeps.gameObject.activeInHierarchy)
                 {
@@ -96,7 +100,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E) && !panelSendCreeps.gameObject.activeInHierarchy)
             {
                 if (!panelUpgrades.gameObject.activeInHierarchy)
                 {
@@ -151,6 +155,10 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             textAmmoCapacity.text = "Current Ammo Capacity: " + GetComponent<PlayerProperties>().playerAmmoCapacity;
             textBulletDamage.text = "Current Bullet Damage: " + GetComponent<PlayerProperties>().playerBulletDamage;
             textFireRate.text = "Current Fire Rate: " + (1 / GetComponent<PlayerProperties>().playerFireRate) + "/bps";
+            buttonTextReloadSpeed.text = "ReloadSpeed: $" + GetComponent<PlayerProperties>().GetReloadSpeedUpgradeCost();
+            buttonTextAmmoCapacity.text = "Ammo Capacity: $" + GetComponent<PlayerProperties>().GetAmmoCapacityUpgradeCost();
+            buttonTextBulletDamage.text = "Bullet Damage: $" + GetComponent<PlayerProperties>().GetBulletDamageUpgradeCost();
+            buttonTextFireRate.text = "Fire Rate: $" + GetComponent<PlayerProperties>().GetFireRateUpgradeCost();
             waveTimer.text = System.Math.Round(NetworkedObjectsH.find.waveTimer,2).ToString();
         }
         else

@@ -460,6 +460,10 @@ MonoBehaviour:
   playerFireRate: 1
   playerReloadSpeed: 5
   playerAmmoCapacity: 6
+  bdL: 0
+  frL: 0
+  rsL: 0
+  acL: 0
 --- !u!114 &144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -485,6 +489,10 @@ MonoBehaviour:
   textFireRate: {fileID: 384753807559470383}
   textBulletDamage: {fileID: 1929539123689098428}
   textAmmoCapacity: {fileID: 2168967027699016443}
+  buttonTextReloadSpeed: {fileID: 8667209074729912229}
+  buttonTextFireRate: {fileID: 3619760808013622031}
+  buttonTextBulletDamage: {fileID: 3856377843532869475}
+  buttonTextAmmoCapacity: {fileID: 4240073028398200340}
   agent: {fileID: 95}
   playerCamera: {fileID: 78}
   target: {fileID: 74}
@@ -1482,7 +1490,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 132}
-        m_MethodName: SpawnLevel2
+        m_MethodName: SpawnLevel4
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2004,7 +2012,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7804777164937222913}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 132}
+        m_MethodName: BuyBulletDamageUpgrade
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &2396462694929712270
@@ -2124,7 +2143,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 132}
-        m_MethodName: SpawnLevel2
+        m_MethodName: SpawnLevel6
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2646,7 +2665,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7278609688822857899}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 132}
+        m_MethodName: BuyReloadSpeedUpgrade
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &4280350802650817731
@@ -3159,7 +3189,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7906072492959161505}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 132}
+        m_MethodName: BuyAmmoCapacityUpgrade
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &7955771920785584703
@@ -3279,7 +3320,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 132}
-        m_MethodName: SpawnLevel2
+        m_MethodName: SpawnLevel3
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3485,7 +3526,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6890546705750305878}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 132}
+        m_MethodName: BuyFireRateUpgrade
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &8614658899744401467
@@ -3687,7 +3739,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 132}
-        m_MethodName: SpawnLevel2
+        m_MethodName: SpawnLevel5
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
