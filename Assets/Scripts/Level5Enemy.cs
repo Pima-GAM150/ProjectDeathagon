@@ -6,6 +6,8 @@
         this.speed = 6;
         this.worth = 5555;
         this.color = 4;
+        this.damage = 25;
+        this.attackSpeed = 2;
         agent.speed = this.speed;
         SetColor();
     }
