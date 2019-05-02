@@ -50,14 +50,17 @@ public class PlayerProperties : MonoBehaviourPun
 
     public void BuyBulletDamageUpgrade()
     {
-        switch (bdL)
+        if (currentWallet >= float.Parse(GetBulletDamageUpgradeCost()))
         {
-            case 0: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; this.playerBulletDamage = 75; UpdateBulletDamage(); break;
-            case 1: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; this.playerBulletDamage = 250; UpdateBulletDamage(); break;
-            case 2: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; this.playerBulletDamage = 500; UpdateBulletDamage(); break;
-            case 3: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; this.playerBulletDamage = 5000; UpdateBulletDamage(); break;
-            case 4: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; this.playerBulletDamage = 50000; UpdateBulletDamage(); break;
-        }
+            switch (bdL)
+            {
+                case 0: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; this.playerBulletDamage = 75; UpdateBulletDamage(); break;
+                case 1: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; this.playerBulletDamage = 250; UpdateBulletDamage(); break;
+                case 2: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; this.playerBulletDamage = 500; UpdateBulletDamage(); break;
+                case 3: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; this.playerBulletDamage = 5000; UpdateBulletDamage(); break;
+                case 4: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; this.playerBulletDamage = 50000; UpdateBulletDamage(); break;
+            }
+        } 
     }
 
     public void UpdateBulletDamage() { GetComponent<PlayerController>().bulletDamage = this.playerBulletDamage; }
@@ -78,14 +81,17 @@ public class PlayerProperties : MonoBehaviourPun
 
     public void BuyFireRateUpgrade()
     {
-        switch (frL)
+        if (currentWallet >= float.Parse(GetFireRateUpgradeCost()))
         {
-            case 0: currentWallet -= int.Parse(GetFireRateUpgradeCost()); frL++; this.playerFireRate = .8f; UpdateFireRate(); break;
-            case 1: currentWallet -= int.Parse(GetFireRateUpgradeCost()); frL++; this.playerFireRate = .6f; UpdateFireRate(); break;
-            case 2: currentWallet -= int.Parse(GetFireRateUpgradeCost()); frL++; this.playerFireRate = .4f; UpdateFireRate(); break;
-            case 3: currentWallet -= int.Parse(GetFireRateUpgradeCost()); frL++; this.playerFireRate = .2f; UpdateFireRate(); break;
-            case 4: currentWallet -= int.Parse(GetFireRateUpgradeCost()); frL++; this.playerFireRate = .1f; UpdateFireRate(); break;
-        }
+            switch (frL)
+            {
+                case 0: currentWallet -= int.Parse(GetFireRateUpgradeCost()); frL++; this.playerFireRate = .8f; UpdateFireRate(); break;
+                case 1: currentWallet -= int.Parse(GetFireRateUpgradeCost()); frL++; this.playerFireRate = .6f; UpdateFireRate(); break;
+                case 2: currentWallet -= int.Parse(GetFireRateUpgradeCost()); frL++; this.playerFireRate = .4f; UpdateFireRate(); break;
+                case 3: currentWallet -= int.Parse(GetFireRateUpgradeCost()); frL++; this.playerFireRate = .2f; UpdateFireRate(); break;
+                case 4: currentWallet -= int.Parse(GetFireRateUpgradeCost()); frL++; this.playerFireRate = .1f; UpdateFireRate(); break;
+            }
+        } 
     }
 
     public void UpdateFireRate() { GetComponent<PlayerController>().fireRate = this.playerFireRate; }
@@ -106,14 +112,17 @@ public class PlayerProperties : MonoBehaviourPun
 
     public void BuyReloadSpeedUpgrade()
     {
-        switch (rsL)
+        if (currentWallet >= float.Parse(GetReloadSpeedUpgradeCost()))
         {
-            case 0: currentWallet -= int.Parse(GetReloadSpeedUpgradeCost()); rsL++; this.playerReloadSpeed = 4; UpdateReloadSpeed(); break;
-            case 1: currentWallet -= int.Parse(GetReloadSpeedUpgradeCost()); rsL++; this.playerReloadSpeed = 3; UpdateReloadSpeed(); break;
-            case 2: currentWallet -= int.Parse(GetReloadSpeedUpgradeCost()); rsL++; this.playerReloadSpeed = 2; UpdateReloadSpeed(); break;
-            case 3: currentWallet -= int.Parse(GetReloadSpeedUpgradeCost()); rsL++; this.playerReloadSpeed = 1; UpdateReloadSpeed(); break;
-            case 4: currentWallet -= int.Parse(GetReloadSpeedUpgradeCost()); rsL++; this.playerReloadSpeed = 0; UpdateReloadSpeed(); break;
-        }
+            switch (rsL)
+            {
+                case 0: currentWallet -= int.Parse(GetReloadSpeedUpgradeCost()); rsL++; this.playerReloadSpeed = 4; UpdateReloadSpeed(); break;
+                case 1: currentWallet -= int.Parse(GetReloadSpeedUpgradeCost()); rsL++; this.playerReloadSpeed = 3; UpdateReloadSpeed(); break;
+                case 2: currentWallet -= int.Parse(GetReloadSpeedUpgradeCost()); rsL++; this.playerReloadSpeed = 2; UpdateReloadSpeed(); break;
+                case 3: currentWallet -= int.Parse(GetReloadSpeedUpgradeCost()); rsL++; this.playerReloadSpeed = 1; UpdateReloadSpeed(); break;
+                case 4: currentWallet -= int.Parse(GetReloadSpeedUpgradeCost()); rsL++; this.playerReloadSpeed = 0; UpdateReloadSpeed(); break;
+            }
+        } 
     }
 
     public void UpdateReloadSpeed() { GetComponent<PlayerController>().reloadSpeed = this.playerReloadSpeed; }
@@ -134,13 +143,16 @@ public class PlayerProperties : MonoBehaviourPun
 
     public void BuyAmmoCapacityUpgrade()
     {
-        switch (acL)
+        if (currentWallet >= float.Parse(GetAmmoCapacityUpgradeCost()))
         {
-            case 0: currentWallet -= int.Parse(GetAmmoCapacityUpgradeCost()); acL++; this.playerAmmoCapacity = 8; UpdateAmmoCapacity(); break;
-            case 1: currentWallet -= int.Parse(GetAmmoCapacityUpgradeCost()); acL++; this.playerAmmoCapacity = 10; UpdateAmmoCapacity(); break;
-            case 2: currentWallet -= int.Parse(GetAmmoCapacityUpgradeCost()); acL++; this.playerAmmoCapacity = 12; UpdateAmmoCapacity(); break;
-            case 3: currentWallet -= int.Parse(GetAmmoCapacityUpgradeCost()); acL++; this.playerAmmoCapacity = 14; UpdateAmmoCapacity(); break;
-            case 4: currentWallet -= int.Parse(GetAmmoCapacityUpgradeCost()); acL++; this.playerAmmoCapacity = 16; UpdateAmmoCapacity(); break;
+            switch (acL)
+            {
+                case 0: currentWallet -= int.Parse(GetAmmoCapacityUpgradeCost()); acL++; this.playerAmmoCapacity = 8; UpdateAmmoCapacity(); break;
+                case 1: currentWallet -= int.Parse(GetAmmoCapacityUpgradeCost()); acL++; this.playerAmmoCapacity = 10; UpdateAmmoCapacity(); break;
+                case 2: currentWallet -= int.Parse(GetAmmoCapacityUpgradeCost()); acL++; this.playerAmmoCapacity = 12; UpdateAmmoCapacity(); break;
+                case 3: currentWallet -= int.Parse(GetAmmoCapacityUpgradeCost()); acL++; this.playerAmmoCapacity = 14; UpdateAmmoCapacity(); break;
+                case 4: currentWallet -= int.Parse(GetAmmoCapacityUpgradeCost()); acL++; this.playerAmmoCapacity = 16; UpdateAmmoCapacity(); break;
+            }
         }
     }
 
