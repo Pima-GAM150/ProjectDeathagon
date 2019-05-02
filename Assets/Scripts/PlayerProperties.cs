@@ -12,6 +12,9 @@ public class PlayerProperties : MonoBehaviourPun
     public int currentWallet;
     public float currentIncome { get; set; }
     public float playerBulletDamage = 25;
+    public float playerFireRate = 1;
+    public float playerReloadSpeed = 5;
+    public float playerAmmoCapacity = 6;
 
     private void Start()
     {
@@ -58,7 +61,7 @@ public class PlayerProperties : MonoBehaviourPun
 
             if (photonView.IsMine)
             {
-                NetworkedObjectsH.find.photonView.RPC("AddToMasterCreepList", RpcTarget.MasterClient, playerNumber - 1, 1);
+                NetworkedObjectsH.find.photonView.RPC("AddToMasterCreepList", RpcTarget.MasterClient, playerNumber - 1, 2);
                 currentWallet -= 5000;
                 currentIncome += 2200;
             }
@@ -72,7 +75,7 @@ public class PlayerProperties : MonoBehaviourPun
 
             if (photonView.IsMine)
             {
-                NetworkedObjectsH.find.photonView.RPC("AddToMasterCreepList", RpcTarget.MasterClient, playerNumber - 1, 1);
+                NetworkedObjectsH.find.photonView.RPC("AddToMasterCreepList", RpcTarget.MasterClient, playerNumber - 1, 3);
                 currentWallet -= 50000;
                 currentIncome += 23000;
             }
@@ -86,7 +89,7 @@ public class PlayerProperties : MonoBehaviourPun
 
             if (photonView.IsMine)
             {
-                NetworkedObjectsH.find.photonView.RPC("AddToMasterCreepList", RpcTarget.MasterClient, playerNumber - 1, 1);
+                NetworkedObjectsH.find.photonView.RPC("AddToMasterCreepList", RpcTarget.MasterClient, playerNumber - 1, 4);
                 currentWallet -= 500000;
                 currentIncome += 240000;
             }
@@ -100,7 +103,7 @@ public class PlayerProperties : MonoBehaviourPun
 
             if (photonView.IsMine)
             {
-                NetworkedObjectsH.find.photonView.RPC("AddToMasterCreepList", RpcTarget.MasterClient, playerNumber - 1, 1);
+                NetworkedObjectsH.find.photonView.RPC("AddToMasterCreepList", RpcTarget.MasterClient, playerNumber - 1, 5);
                 currentWallet -= 5000000;
                 currentIncome += 2500000;
             }

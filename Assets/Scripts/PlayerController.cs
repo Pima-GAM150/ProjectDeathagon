@@ -13,7 +13,17 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     public Text waveTimer;
 
     public RectTransform panelSendCreeps;
-    
+
+    public RectTransform panelUpgrades;
+
+    public Text textHealth;
+    public Text textArmor;
+    public Text textAmmo;
+    public Text textReloadSpeed;
+    public Text textFireRate;
+    public Text textBulletDamage;
+    public Text textAmmoCapacity;
+
     public UnityEngine.AI.NavMeshAgent agent;
 
     public Camera playerCamera;
@@ -55,6 +65,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             UnitSpawner.find.arenaSpawns.Add(UnitSpawner.find.unitSpawnsSeven);
             UnitSpawner.find.arenaSpawns.Add(UnitSpawner.find.unitSpawnsEight);
             panelSendCreeps.gameObject.SetActive(false);
+            panelUpgrades.gameObject.SetActive(false);
         }
         else
         {
@@ -75,13 +86,30 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
                 {
                     panelSendCreeps.gameObject.SetActive(true);
                     shoot = false;
+                    if (!testing) Cursor.lockState = CursorLockMode.None;
                 }
                 else
                 {
                     panelSendCreeps.gameObject.SetActive(false);
                     shoot = true;
+                    if (!testing) Cursor.lockState = CursorLockMode.Locked;
                 }
+            }
 
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (!panelUpgrades.gameObject.activeInHierarchy)
+                {
+                    panelUpgrades.gameObject.SetActive(true);
+                    shoot = false;
+                    if (!testing) Cursor.lockState = CursorLockMode.None;
+                }
+                else
+                {
+                    panelUpgrades.gameObject.SetActive(false);
+                    shoot = true;
+                    if (!testing) Cursor.lockState = CursorLockMode.Locked;
+                }
             }
 
             if (testing)
@@ -119,7 +147,11 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             }
             incomeText.text = "Income: " + transform.GetComponent<PlayerProperties>().currentIncome;
             walletText.text = "Wallet: " + transform.GetComponent<PlayerProperties>().currentWallet;
-            waveTimer.text = System.Math.Round(NetworkedObjectsH.find.waveTimer,2) + " seconds until next wave";
+            textReloadSpeed.text = "Current Reload Speed: " + GetComponent<PlayerProperties>().playerReloadSpeed + " Seconds";
+            textAmmoCapacity.text = "Current Ammo Capacity: " + GetComponent<PlayerProperties>().playerAmmoCapacity;
+            textBulletDamage.text = "Current Bullet Damage: " + GetComponent<PlayerProperties>().playerBulletDamage;
+            textFireRate.text = "Current Fire Rate: " + (1 / GetComponent<PlayerProperties>().playerFireRate) + "/bps";
+            waveTimer.text = System.Math.Round(NetworkedObjectsH.find.waveTimer,2).ToString();
         }
         else
         {
@@ -127,6 +159,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             appearance.position = Vector3.Lerp(appearance.position, target.position, speed * Time.deltaTime);
         }
     }
+
     public Vector3 GetDestination()
     {
         Vector3 direction = new Vector3(Input.GetAxis("Horizontal") * 10,0f, Input.GetAxis("Vertical") * 10);

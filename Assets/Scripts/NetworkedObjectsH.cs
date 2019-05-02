@@ -50,11 +50,6 @@ public class NetworkedObjectsH : MonoBehaviourPun
                 {
                     players[i].RPC("PayPlayers", RpcTarget.All);
                     players[i].RPC("SyncWaveTimer", RpcTarget.All,30);
-
-                    //if (i == 0) players[i].RPC("SpawnCreeps", RpcTarget.All, CreepList.MakeCreepListJson(creepList[players.Count - 1]), i);
-                    //else if (i == players.Count - 1) players[players.Count - 1].RPC("SpawnCreeps", RpcTarget.All, CreepList.MakeCreepListJson(creepList[i - 1]), i);
-                    //else players[i].RPC("SpawnCreeps", RpcTarget.All, CreepList.MakeCreepListJson(creepList[i - 1]), i);
-
                     if (i == 0) UnitSpawner.find.SpawnCreeps(creepList[players.Count - 1], i);
                     else UnitSpawner.find.SpawnCreeps(creepList[i - 1], i);
                 }
