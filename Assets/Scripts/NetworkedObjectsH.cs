@@ -96,13 +96,7 @@ public class NetworkedObjectsH : MonoBehaviourPun
         }
     }
 
-    private void ShiftCreepList( int start )
-    {
-        for(int i = start; i < players.Count; i++)
-        {
-            creepList[i] = creepList[i + 1];
-        }
-    }
+    private void ShiftCreepList( int start ) { creepList.RemoveAt(start); }
 
     [PunRPC]
     public void AddToMasterCreepList(int playerNumber,int creep)

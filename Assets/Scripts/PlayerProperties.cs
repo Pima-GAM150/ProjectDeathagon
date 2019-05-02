@@ -45,6 +45,9 @@ public class PlayerProperties : MonoBehaviourPun
 
     public void UpdatePlayerArmor() { GetComponent<PlayerController>().playerArmor = this.playerArmor; }
 
+    [PunRPC]
+    public void TakeDamage(float dam) { this.playerHealth -= dam; }
+
     public void BuyBulletDamageUpgrade()
     {
         switch (bdL)

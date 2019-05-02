@@ -58,6 +58,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     public bool testing;
 
     public bool shoot = true;
+    public bool reloadShoot = true;
     
 
     public AnimationCurve mouseSensitivityCurve = new AnimationCurve(new Keyframe(0f, 0.5f, 0f, 5f), new Keyframe(1f, 2.5f, 0f, 0f));
@@ -94,6 +95,9 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         playerNumberText.text = "Player: " + playerNumber;
         if (photonView.IsMine)
         {
+            if (reloadSpeed >= 0) reloadSpeed -= Time.deltaTime;
+            if (reloadSpeed < 0) reloadShoot = true;
+            if (fireRate >= 0) fireRate -= Time.deltaTime;
             if (Input.GetKeyDown(KeyCode.Q) && !panelUpgrades.gameObject.activeInHierarchy)
             {
                 if (!panelSendCreeps.gameObject.activeInHierarchy)
@@ -154,7 +158,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
             if (Input.GetKeyDown(KeyCode.R)) ReloadGun();
 
-            if (Input.GetMouseButtonDown(0) && shoot && fireRate <= 0 && ammoCapacity >= 1)
+            if (Input.GetMouseButtonDown(0) && shoot && reloadShoot && fireRate <= 0 && ammoCapacity >= 1)
             {
                 bullet = Instantiate(Bullet);
                 bullet.transform.GetComponent<Bullet>().bulletDamage = bulletDamage;
@@ -166,21 +170,18 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             else if (ammoCapacity == 0) ReloadGun();
 
             SetUIText();
-
-            if (reloadSpeed >= 0) reloadSpeed -= Time.deltaTime;
-            if (reloadSpeed < 0) shoot = true;
-            if (fireRate >= 0) fireRate -= Time.deltaTime;
+            if (playerHealth <= 0) photonView.RPC("DestroyMePlayer", RpcTarget.All);
         }
         else
         {
             // interpolate from the renderer's current position to its ideal position
             appearance.position = Vector3.Lerp(appearance.position, target.position, speed * Time.deltaTime);
-        }
+        } 
     }
 
     public void ReloadGun()
     {
-        shoot = false;
+        reloadShoot = false;
         GetComponent<PlayerProperties>().UpdateReloadSpeed();
         GetComponent<PlayerProperties>().UpdateAmmoCapacity();
     }
@@ -245,6 +246,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     [PunRPC]
     public void DestroyMePlayer()
     {
+        foreach (PhotonView unit in UnitSpawner.find.aliveCreeps[playerNumber - 1]) unit.RPC("DestroyMe", RpcTarget.MasterClient);
         NetworkedObjectsH.find.RemoveMe(this.photonView);
         PhotonNetwork.Destroy(this.gameObject);
     }

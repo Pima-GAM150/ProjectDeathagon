@@ -20,6 +20,11 @@ public class Level1Enemy : MonoBehaviourPun , IPunObservable, IPunInstantiateMag
 
     public float worth;
 
+    public float damage;
+
+    public float attackSpeed;
+    public float attack;
+
     Vector3 lastSyncedPos;
 
     public Color[] enemyColors;
@@ -32,10 +37,13 @@ public class Level1Enemy : MonoBehaviourPun , IPunObservable, IPunInstantiateMag
         this.HitPoints = 50;
         this.speed = 2;
         this.worth = 5;
+        this.damage = 5;
+        this.attackSpeed = 2;
     }
 
     private void Start()
     {
+        this.attack = this.attackSpeed;
         agent.speed = this.speed;
         SetColor();
     }
@@ -46,6 +54,12 @@ public class Level1Enemy : MonoBehaviourPun , IPunObservable, IPunInstantiateMag
         target = transform;
         agent.destination = Destination.position;
         appearance.position = Vector3.Lerp(appearance.position, target.position, speed * Time.deltaTime);
+        if (attack >= 0) attack -= Time.deltaTime;
+        if (Vector3.Distance(transform.position, Destination.position) < 2 && attack <= 0)
+        {
+            attack = this.attackSpeed;
+            Destination.GetComponent<PhotonView>().RPC("TakeDamage", RpcTarget.All, damage);
+        }
     }
 
     [PunRPC]
@@ -104,6 +118,7 @@ public class Level1Enemy : MonoBehaviourPun , IPunObservable, IPunInstantiateMag
     [PunRPC]
     public void DestroyMe()
     {
+        UnitSpawner.find.aliveCreeps[Destination.GetComponent<PlayerController>().playerNumber - 1].Remove(this.photonView);
         PhotonNetwork.Destroy(this.gameObject);
     }
 }

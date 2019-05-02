@@ -460,6 +460,8 @@ MonoBehaviour:
   playerFireRate: 1
   playerReloadSpeed: 5
   playerAmmoCapacity: 6
+  playerHealth: 100
+  playerArmor: 0
   bdL: 0
   frL: 0
   rsL: 0
@@ -493,6 +495,12 @@ MonoBehaviour:
   buttonTextFireRate: {fileID: 3619760808013622031}
   buttonTextBulletDamage: {fileID: 3856377843532869475}
   buttonTextAmmoCapacity: {fileID: 4240073028398200340}
+  fireRate: 0
+  bulletDamage: 0
+  reloadSpeed: 0
+  ammoCapacity: 0
+  playerHealth: 0
+  playerArmor: 0
   agent: {fileID: 95}
   playerCamera: {fileID: 78}
   target: {fileID: 74}
@@ -503,6 +511,7 @@ MonoBehaviour:
   Bullet: {fileID: 7139882025467986452, guid: bcacb86a965fe024cae1ccba0f61a7b0, type: 3}
   testing: 1
   shoot: 1
+  reloadShoot: 1
   mouseSensitivityCurve:
     serializedVersion: 2
     m_Curve:
