@@ -26,7 +26,7 @@ public class Level1Enemy : MonoBehaviourPun , IPunObservable, IPunInstantiateMag
     {
         this.HitPoints = 50;
         this.speed = 2;
-        this.worth = 10;
+        this.worth = 5;
     }
 
     // Update is called once per frame
@@ -51,7 +51,6 @@ public class Level1Enemy : MonoBehaviourPun , IPunObservable, IPunInstantiateMag
         if (HitPoints <= 0)
         {
             Destination.GetComponent<PlayerProperties>().KillEnemy(10);
-
             photonView.RPC("DestroyMe", RpcTarget.MasterClient);
         }
     }

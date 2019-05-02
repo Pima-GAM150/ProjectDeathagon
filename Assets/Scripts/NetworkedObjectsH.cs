@@ -87,11 +87,26 @@ public class NetworkedObjectsH : MonoBehaviourPun
         }
     }
 
-    public void RemoveMe(int playerNumber)
+    public void RemoveMe(PhotonView player)
     {
-        if (playerNumber > myPlayerNumber) myPlayerNumber--;
-        players.RemoveAt(playerNumber - 1);
-        creepList.RemoveAt(playerNumber - 1);
+        int counter = 0;
+        foreach (PhotonView Player in players)
+        {
+            if (player == Player)
+            {
+                ShiftCreepList(counter);
+                players.Remove(player);
+            }
+            counter++;
+        }
+    }
+
+    private void ShiftCreepList( int start )
+    {
+        for(int i = start; i < players.Count; i++)
+        {
+            creepList[i] = creepList[i + 1];
+        }
     }
 
     [PunRPC]

@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     public Text walletText;
     public Text waveTimer;
 
-    public Button LevelOne;
+    public RectTransform panelSendCreeps;
     
     public UnityEngine.AI.NavMeshAgent agent;
 
@@ -32,6 +32,10 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
     public GameObject Bullet;
     private GameObject bullet;
+
+    public bool testing = true;
+
+    public bool shoot = true;
     
 
     public AnimationCurve mouseSensitivityCurve = new AnimationCurve(new Keyframe(0f, 0.5f, 0f, 5f), new Keyframe(1f, 2.5f, 0f, 0f));
@@ -49,7 +53,8 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             UnitSpawner.find.arenaSpawns.Add(UnitSpawner.find.unitSpawnsFive);
             UnitSpawner.find.arenaSpawns.Add(UnitSpawner.find.unitSpawnsSix);
             UnitSpawner.find.arenaSpawns.Add(UnitSpawner.find.unitSpawnsSeven);
-            UnitSpawner.find.arenaSpawns.Add(UnitSpawner.find.unitSpawnsEight);        
+            UnitSpawner.find.arenaSpawns.Add(UnitSpawner.find.unitSpawnsEight);
+            panelSendCreeps.gameObject.SetActive(false);
         }
         else
         {
@@ -64,18 +69,36 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         playerNumberText.text = "Player: " + playerNumber;
         if (photonView.IsMine)
         {
-            NavMeshTarget.position = target.position;
-            RotateDestination(GetDestination());
-            agent.destination = NavMeshTarget.position;
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetKeyDown(KeyCode.Q))
             {
-                bullet = Instantiate(Bullet);
-                bullet.transform.GetComponent<Bullet>().bulletDamage = GetComponent<PlayerProperties>().playerBulletDamage;
-                bullet.transform.position = transform.position + Vector3.up;
-                bullet.transform.eulerAngles = new Vector3(playerCamera.transform.eulerAngles.x - 3, transform.eulerAngles.y, 0f);
+                if (!panelSendCreeps.gameObject.activeInHierarchy)
+                {
+                    panelSendCreeps.gameObject.SetActive(true);
+                    shoot = false;
+                }
+                else
+                {
+                    panelSendCreeps.gameObject.SetActive(false);
+                    shoot = true;
+                }
+
             }
-            if (Input.GetMouseButton(1))
+
+            if (testing)
             {
+                if (Input.GetMouseButton(1))
+                {
+                    var mouseMovement = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+
+                    var mouseSensitivityFactor = mouseSensitivityCurve.Evaluate(mouseMovement.magnitude);
+
+                    playerCamera.transform.eulerAngles -= new Vector3(mouseMovement.y * mouseSensitivityFactor, 0f, 0f);
+                    transform.eulerAngles += new Vector3(0f, mouseMovement.x * mouseSensitivityFactor, 0f);
+                }
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
                 var mouseMovement = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
 
                 var mouseSensitivityFactor = mouseSensitivityCurve.Evaluate(mouseMovement.magnitude);
@@ -83,10 +106,16 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
                 playerCamera.transform.eulerAngles -= new Vector3(mouseMovement.y * mouseSensitivityFactor, 0f, 0f);
                 transform.eulerAngles += new Vector3(0f, mouseMovement.x * mouseSensitivityFactor, 0f);
             }
-            if (Input.GetKeyDown(KeyCode.Q))
+
+            NavMeshTarget.position = target.position;
+            RotateDestination(GetDestination());
+            agent.destination = NavMeshTarget.position;
+            if (Input.GetMouseButtonDown(0) && shoot)
             {
-                if (LevelOne.gameObject.activeInHierarchy == false) LevelOne.gameObject.SetActive(true);
-                else LevelOne.gameObject.SetActive(false);
+                bullet = Instantiate(Bullet);
+                bullet.transform.GetComponent<Bullet>().bulletDamage = GetComponent<PlayerProperties>().playerBulletDamage;
+                bullet.transform.position = transform.position + Vector3.up;
+                bullet.transform.eulerAngles = new Vector3(playerCamera.transform.eulerAngles.x, transform.eulerAngles.y, 0f);
             }
             incomeText.text = "Income: " + transform.GetComponent<PlayerProperties>().currentIncome;
             walletText.text = "Wallet: " + transform.GetComponent<PlayerProperties>().currentWallet;
@@ -134,9 +163,11 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         }
     }
 
-    private void OnDestroy()
+    [PunRPC]
+    public void DestroyMePlayer()
     {
-        NetworkedObjectsH.find.RemoveMe(playerNumber - 1);
+        NetworkedObjectsH.find.RemoveMe(this.photonView);
+        PhotonNetwork.Destroy(this.gameObject);
     }
 
     [PunRPC]

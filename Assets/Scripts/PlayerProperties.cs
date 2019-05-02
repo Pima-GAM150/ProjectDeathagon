@@ -39,14 +39,70 @@ public class PlayerProperties : MonoBehaviourPun
 
     public void SpawnLevel2()
     {
-        if (currentWallet >= 100)
+        if (currentWallet >= 500)
         {
 
             if (photonView.IsMine)
             {
                 NetworkedObjectsH.find.photonView.RPC("AddToMasterCreepList", RpcTarget.MasterClient, playerNumber - 1, 1);
-                currentWallet -= 100;
-                currentIncome += 40;
+                currentWallet -= 500;
+                currentIncome += 210;
+            }
+        }
+    }
+
+    public void SpawnLevel3()
+    {
+        if (currentWallet >= 5000)
+        {
+
+            if (photonView.IsMine)
+            {
+                NetworkedObjectsH.find.photonView.RPC("AddToMasterCreepList", RpcTarget.MasterClient, playerNumber - 1, 1);
+                currentWallet -= 5000;
+                currentIncome += 2200;
+            }
+        }
+    }
+
+    public void SpawnLevel4()
+    {
+        if (currentWallet >= 50000)
+        {
+
+            if (photonView.IsMine)
+            {
+                NetworkedObjectsH.find.photonView.RPC("AddToMasterCreepList", RpcTarget.MasterClient, playerNumber - 1, 1);
+                currentWallet -= 50000;
+                currentIncome += 23000;
+            }
+        }
+    }
+
+    public void SpawnLevel5()
+    {
+        if (currentWallet >= 500000)
+        {
+
+            if (photonView.IsMine)
+            {
+                NetworkedObjectsH.find.photonView.RPC("AddToMasterCreepList", RpcTarget.MasterClient, playerNumber - 1, 1);
+                currentWallet -= 500000;
+                currentIncome += 240000;
+            }
+        }
+    }
+
+    public void SpawnLevel6()
+    {
+        if (currentWallet >= 5000000)
+        {
+
+            if (photonView.IsMine)
+            {
+                NetworkedObjectsH.find.photonView.RPC("AddToMasterCreepList", RpcTarget.MasterClient, playerNumber - 1, 1);
+                currentWallet -= 5000000;
+                currentIncome += 2500000;
             }
         }
     }
