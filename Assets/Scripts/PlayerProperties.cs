@@ -14,7 +14,10 @@ public class PlayerProperties : MonoBehaviourPun
     public float playerBulletDamage = 25;
     public float playerFireRate = 1;
     public float playerReloadSpeed = 5;
-    public float playerAmmoCapacity = 6;
+    public int playerAmmoCapacity = 6;
+
+    public float playerHealth = 100;
+    public float playerArmor = 0;
 
     public int bdL = 0;
     public int frL = 0;
@@ -23,7 +26,14 @@ public class PlayerProperties : MonoBehaviourPun
 
     private void Start()
     {
-        if (photonView.IsMine) UnitSpawner.find.player = transform;
+        if (photonView.IsMine)
+        {
+            UnitSpawner.find.player = transform;
+            UpdateFireRate();
+            UpdateAmmoCapacity();
+            UpdateBulletDamage();
+            UpdateReloadSpeed();
+        }
     }
 
     public void KillEnemy(int worth)
@@ -31,17 +41,23 @@ public class PlayerProperties : MonoBehaviourPun
         currentWallet += worth;
     }
 
+    public void UpdatePlayerHealth() { GetComponent<PlayerController>().playerHealth = this.playerHealth; }
+
+    public void UpdatePlayerArmor() { GetComponent<PlayerController>().playerArmor = this.playerArmor; }
+
     public void BuyBulletDamageUpgrade()
     {
         switch (bdL)
         {
-            case 0: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; playerBulletDamage = 75; break;
-            case 1: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; playerBulletDamage = 250; break;
-            case 2: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; playerBulletDamage = 500; break;
-            case 3: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; playerBulletDamage = 5000; break;
-            case 4: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; playerBulletDamage = 50000; break;
+            case 0: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; this.playerBulletDamage = 75; UpdateBulletDamage(); break;
+            case 1: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; this.playerBulletDamage = 250; UpdateBulletDamage(); break;
+            case 2: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; this.playerBulletDamage = 500; UpdateBulletDamage(); break;
+            case 3: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; this.playerBulletDamage = 5000; UpdateBulletDamage(); break;
+            case 4: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; this.playerBulletDamage = 50000; UpdateBulletDamage(); break;
         }
     }
+
+    public void UpdateBulletDamage() { GetComponent<PlayerController>().bulletDamage = this.playerBulletDamage; }
 
     public string GetBulletDamageUpgradeCost()
     {
@@ -61,13 +77,15 @@ public class PlayerProperties : MonoBehaviourPun
     {
         switch (frL)
         {
-            case 0: currentWallet -= int.Parse(GetFireRateUpgradeCost()); frL++; playerFireRate = .8f; break;
-            case 1: currentWallet -= int.Parse(GetFireRateUpgradeCost()); frL++; playerFireRate = .6f; break;
-            case 2: currentWallet -= int.Parse(GetFireRateUpgradeCost()); frL++; playerFireRate = .4f; break;
-            case 3: currentWallet -= int.Parse(GetFireRateUpgradeCost()); frL++; playerFireRate = .2f; break;
-            case 4: currentWallet -= int.Parse(GetFireRateUpgradeCost()); frL++; playerFireRate = .1f; break;
+            case 0: currentWallet -= int.Parse(GetFireRateUpgradeCost()); frL++; this.playerFireRate = .8f; UpdateFireRate(); break;
+            case 1: currentWallet -= int.Parse(GetFireRateUpgradeCost()); frL++; this.playerFireRate = .6f; UpdateFireRate(); break;
+            case 2: currentWallet -= int.Parse(GetFireRateUpgradeCost()); frL++; this.playerFireRate = .4f; UpdateFireRate(); break;
+            case 3: currentWallet -= int.Parse(GetFireRateUpgradeCost()); frL++; this.playerFireRate = .2f; UpdateFireRate(); break;
+            case 4: currentWallet -= int.Parse(GetFireRateUpgradeCost()); frL++; this.playerFireRate = .1f; UpdateFireRate(); break;
         }
     }
+
+    public void UpdateFireRate() { GetComponent<PlayerController>().fireRate = this.playerFireRate; }
 
     public string GetFireRateUpgradeCost()
     {
@@ -87,13 +105,15 @@ public class PlayerProperties : MonoBehaviourPun
     {
         switch (rsL)
         {
-            case 0: currentWallet -= int.Parse(GetReloadSpeedUpgradeCost()); rsL++; playerReloadSpeed = 4; break;
-            case 1: currentWallet -= int.Parse(GetReloadSpeedUpgradeCost()); rsL++; playerReloadSpeed = 3; break;
-            case 2: currentWallet -= int.Parse(GetReloadSpeedUpgradeCost()); rsL++; playerReloadSpeed = 2; break;
-            case 3: currentWallet -= int.Parse(GetReloadSpeedUpgradeCost()); rsL++; playerReloadSpeed = 1; break;
-            case 4: currentWallet -= int.Parse(GetReloadSpeedUpgradeCost()); rsL++; playerReloadSpeed = 0; break;
+            case 0: currentWallet -= int.Parse(GetReloadSpeedUpgradeCost()); rsL++; this.playerReloadSpeed = 4; UpdateReloadSpeed(); break;
+            case 1: currentWallet -= int.Parse(GetReloadSpeedUpgradeCost()); rsL++; this.playerReloadSpeed = 3; UpdateReloadSpeed(); break;
+            case 2: currentWallet -= int.Parse(GetReloadSpeedUpgradeCost()); rsL++; this.playerReloadSpeed = 2; UpdateReloadSpeed(); break;
+            case 3: currentWallet -= int.Parse(GetReloadSpeedUpgradeCost()); rsL++; this.playerReloadSpeed = 1; UpdateReloadSpeed(); break;
+            case 4: currentWallet -= int.Parse(GetReloadSpeedUpgradeCost()); rsL++; this.playerReloadSpeed = 0; UpdateReloadSpeed(); break;
         }
     }
+
+    public void UpdateReloadSpeed() { GetComponent<PlayerController>().reloadSpeed = this.playerReloadSpeed; }
 
     public string GetReloadSpeedUpgradeCost()
     {
@@ -113,13 +133,15 @@ public class PlayerProperties : MonoBehaviourPun
     {
         switch (acL)
         {
-            case 0: currentWallet -= int.Parse(GetAmmoCapacityUpgradeCost()); acL++; playerAmmoCapacity = 8; break;
-            case 1: currentWallet -= int.Parse(GetAmmoCapacityUpgradeCost()); acL++; playerAmmoCapacity = 10; break;
-            case 2: currentWallet -= int.Parse(GetAmmoCapacityUpgradeCost()); acL++; playerAmmoCapacity = 12; break;
-            case 3: currentWallet -= int.Parse(GetAmmoCapacityUpgradeCost()); acL++; playerAmmoCapacity = 14; break;
-            case 4: currentWallet -= int.Parse(GetAmmoCapacityUpgradeCost()); acL++; playerAmmoCapacity = 16; break;
+            case 0: currentWallet -= int.Parse(GetAmmoCapacityUpgradeCost()); acL++; this.playerAmmoCapacity = 8; UpdateAmmoCapacity(); break;
+            case 1: currentWallet -= int.Parse(GetAmmoCapacityUpgradeCost()); acL++; this.playerAmmoCapacity = 10; UpdateAmmoCapacity(); break;
+            case 2: currentWallet -= int.Parse(GetAmmoCapacityUpgradeCost()); acL++; this.playerAmmoCapacity = 12; UpdateAmmoCapacity(); break;
+            case 3: currentWallet -= int.Parse(GetAmmoCapacityUpgradeCost()); acL++; this.playerAmmoCapacity = 14; UpdateAmmoCapacity(); break;
+            case 4: currentWallet -= int.Parse(GetAmmoCapacityUpgradeCost()); acL++; this.playerAmmoCapacity = 16; UpdateAmmoCapacity(); break;
         }
     }
+
+    public void UpdateAmmoCapacity() { GetComponent<PlayerController>().ammoCapacity = this.playerAmmoCapacity; }
 
     public string GetAmmoCapacityUpgradeCost()
     {

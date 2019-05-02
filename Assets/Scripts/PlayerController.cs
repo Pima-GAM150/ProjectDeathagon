@@ -28,6 +28,14 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     public Text buttonTextBulletDamage;
     public Text buttonTextAmmoCapacity;
 
+    public float fireRate;
+    public float bulletDamage;
+    public float reloadSpeed;
+    public int ammoCapacity;
+
+    public float playerHealth;
+    public float playerArmor;
+
     public UnityEngine.AI.NavMeshAgent agent;
 
     public Camera playerCamera;
@@ -47,7 +55,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     public GameObject Bullet;
     private GameObject bullet;
 
-    public bool testing = true;
+    public bool testing;
 
     public bool shoot = true;
     
@@ -56,6 +64,8 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     // Start is called before the first frame update
     void Start()
     {
+        testing = false;
+        if (!testing) Cursor.lockState = CursorLockMode.Locked;
         if (photonView.IsMine)
         {
             transform.GetComponent<PlayerProperties>().currentIncome = 200;
@@ -130,7 +140,6 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             }
             else
             {
-                Cursor.lockState = CursorLockMode.Locked;
                 var mouseMovement = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
 
                 var mouseSensitivityFactor = mouseSensitivityCurve.Evaluate(mouseMovement.magnitude);
@@ -142,30 +151,59 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             NavMeshTarget.position = target.position;
             RotateDestination(GetDestination());
             agent.destination = NavMeshTarget.position;
-            if (Input.GetMouseButtonDown(0) && shoot)
+
+            if (Input.GetKeyDown(KeyCode.R)) ReloadGun();
+
+            if (Input.GetMouseButtonDown(0) && shoot && fireRate <= 0 && ammoCapacity >= 1)
             {
                 bullet = Instantiate(Bullet);
-                bullet.transform.GetComponent<Bullet>().bulletDamage = GetComponent<PlayerProperties>().playerBulletDamage;
+                bullet.transform.GetComponent<Bullet>().bulletDamage = bulletDamage;
                 bullet.transform.position = transform.position + Vector3.up;
                 bullet.transform.eulerAngles = new Vector3(playerCamera.transform.eulerAngles.x, transform.eulerAngles.y, 0f);
+                GetComponent<PlayerProperties>().UpdateFireRate();
+                ammoCapacity--;
             }
-            incomeText.text = "Income: " + transform.GetComponent<PlayerProperties>().currentIncome;
-            walletText.text = "Wallet: " + transform.GetComponent<PlayerProperties>().currentWallet;
-            textReloadSpeed.text = "Current Reload Speed: " + GetComponent<PlayerProperties>().playerReloadSpeed + " Seconds";
-            textAmmoCapacity.text = "Current Ammo Capacity: " + GetComponent<PlayerProperties>().playerAmmoCapacity;
-            textBulletDamage.text = "Current Bullet Damage: " + GetComponent<PlayerProperties>().playerBulletDamage;
-            textFireRate.text = "Current Fire Rate: " + (1 / GetComponent<PlayerProperties>().playerFireRate) + "/bps";
-            buttonTextReloadSpeed.text = "ReloadSpeed: $" + GetComponent<PlayerProperties>().GetReloadSpeedUpgradeCost();
-            buttonTextAmmoCapacity.text = "Ammo Capacity: $" + GetComponent<PlayerProperties>().GetAmmoCapacityUpgradeCost();
-            buttonTextBulletDamage.text = "Bullet Damage: $" + GetComponent<PlayerProperties>().GetBulletDamageUpgradeCost();
-            buttonTextFireRate.text = "Fire Rate: $" + GetComponent<PlayerProperties>().GetFireRateUpgradeCost();
-            waveTimer.text = System.Math.Round(NetworkedObjectsH.find.waveTimer,2).ToString();
+            else if (ammoCapacity == 0) ReloadGun();
+
+            SetUIText();
+
+            if (reloadSpeed >= 0) reloadSpeed -= Time.deltaTime;
+            if (reloadSpeed < 0) shoot = true;
+            if (fireRate >= 0) fireRate -= Time.deltaTime;
         }
         else
         {
             // interpolate from the renderer's current position to its ideal position
             appearance.position = Vector3.Lerp(appearance.position, target.position, speed * Time.deltaTime);
         }
+    }
+
+    public void ReloadGun()
+    {
+        shoot = false;
+        GetComponent<PlayerProperties>().UpdateReloadSpeed();
+        GetComponent<PlayerProperties>().UpdateAmmoCapacity();
+    }
+
+    private void SetUIText()
+    {
+        incomeText.text = "Income: " + transform.GetComponent<PlayerProperties>().currentIncome;
+        walletText.text = "Wallet: " + transform.GetComponent<PlayerProperties>().currentWallet;
+        textReloadSpeed.text = "Current Reload Speed: " + GetComponent<PlayerProperties>().playerReloadSpeed + " Seconds";
+        textAmmoCapacity.text = "Current Ammo Capacity: " + GetComponent<PlayerProperties>().playerAmmoCapacity;
+        textBulletDamage.text = "Current Bullet Damage: " + GetComponent<PlayerProperties>().playerBulletDamage;
+        textFireRate.text = "Current Fire Rate: " + (1 / GetComponent<PlayerProperties>().playerFireRate) + "/bps";
+        buttonTextReloadSpeed.text = "ReloadSpeed: $" + GetComponent<PlayerProperties>().GetReloadSpeedUpgradeCost();
+        buttonTextAmmoCapacity.text = "Ammo Capacity: $" + GetComponent<PlayerProperties>().GetAmmoCapacityUpgradeCost();
+        buttonTextBulletDamage.text = "Bullet Damage: $" + GetComponent<PlayerProperties>().GetBulletDamageUpgradeCost();
+        buttonTextFireRate.text = "Fire Rate: $" + GetComponent<PlayerProperties>().GetFireRateUpgradeCost();
+        waveTimer.text = System.Math.Round(NetworkedObjectsH.find.waveTimer, 2).ToString();
+        if (ammoCapacity == 0) textAmmo.text = "Ammo: Press R to reload";
+        else textAmmo.text = "Ammo: " + ammoCapacity;
+        GetComponent<PlayerProperties>().UpdatePlayerHealth();
+        GetComponent<PlayerProperties>().UpdatePlayerArmor();
+        textHealth.text = "Current Health: " + playerHealth;
+        textArmor.text = "Current Armor: " + playerArmor;
     }
 
     public Vector3 GetDestination()

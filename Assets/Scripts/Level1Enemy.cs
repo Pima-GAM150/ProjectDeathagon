@@ -22,11 +22,22 @@ public class Level1Enemy : MonoBehaviourPun , IPunObservable, IPunInstantiateMag
 
     Vector3 lastSyncedPos;
 
+    public Color[] enemyColors;
+    public Color currentColor { get; set; }
+    public int color = 0;
+    public Renderer rend;
+
     public Level1Enemy()
     {
         this.HitPoints = 50;
         this.speed = 2;
         this.worth = 5;
+    }
+
+    private void Start()
+    {
+        agent.speed = this.speed;
+        SetColor();
     }
 
     // Update is called once per frame
@@ -35,7 +46,6 @@ public class Level1Enemy : MonoBehaviourPun , IPunObservable, IPunInstantiateMag
         target = transform;
         agent.destination = Destination.position;
         appearance.position = Vector3.Lerp(appearance.position, target.position, speed * Time.deltaTime);
-        agent.speed = this.speed;
     }
 
     [PunRPC]
@@ -43,6 +53,7 @@ public class Level1Enemy : MonoBehaviourPun , IPunObservable, IPunInstantiateMag
     {
         Destination = NetworkedObjectsH.find.players[destination].transform;
         UnitSpawner.find.aliveCreeps[destination].Add(this.photonView);
+        
     }
 
     void OnTriggerEnter(Collider col)
@@ -54,6 +65,12 @@ public class Level1Enemy : MonoBehaviourPun , IPunObservable, IPunInstantiateMag
             Destination.GetComponent<PlayerProperties>().KillEnemy(10);
             photonView.RPC("DestroyMe", RpcTarget.MasterClient);
         }
+    }
+
+    public void SetColor()
+    {
+        currentColor = enemyColors[color];
+        rend.material.color = currentColor;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

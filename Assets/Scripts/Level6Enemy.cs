@@ -5,5 +5,8 @@
         this.HitPoints = 555550;
         this.speed = 7;
         this.worth = 55555;
+        this.color = 6;
+        agent.speed = this.speed;
+        SetColor();
     }
 }

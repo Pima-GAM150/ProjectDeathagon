@@ -185,7 +185,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   ObservedComponents:
   - {fileID: 1752153529437473480}
-  viewIdField: 1
+  viewIdField: 0
   InstantiationId: 1
   isRuntimeInstantiated: 0
 --- !u!114 &1752153529437473480
@@ -221,3 +221,12 @@ MonoBehaviour:
   HitPoints: 50
   speed: 2
   worth: 5
+  enemyColors:
+  - {r: 0.9843138, g: 0.011764707, b: 0.007843138, a: 1}
+  - {r: 0, g: 0.3019608, b: 0.97647065, a: 1}
+  - {r: 0.0627451, g: 1, b: 0.78823537, a: 1}
+  - {r: 0.5764706, g: 0.007843138, b: 0.9843138, a: 1}
+  - {r: 1, g: 0.9960785, b: 0.003921569, a: 1}
+  - {r: 0.9921569, g: 0.5647059, b: 0.04705883, a: 1}
+  color: 0
+  rend: {fileID: 4980882889258479639}
