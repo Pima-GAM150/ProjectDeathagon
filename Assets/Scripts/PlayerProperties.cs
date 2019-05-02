@@ -36,10 +36,10 @@ public class PlayerProperties : MonoBehaviourPun
         switch (bdL)
         {
             case 0: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; playerBulletDamage = 75; break;
-            case 1: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; playerBulletDamage = 225; break;
-            case 2: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; playerBulletDamage = 675; break;
-            case 3: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; playerBulletDamage = 2025; break;
-            case 4: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; playerBulletDamage = 6075; break;
+            case 1: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; playerBulletDamage = 250; break;
+            case 2: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; playerBulletDamage = 500; break;
+            case 3: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; playerBulletDamage = 5000; break;
+            case 4: currentWallet -= int.Parse(GetBulletDamageUpgradeCost()); bdL++; playerBulletDamage = 50000; break;
         }
     }
 
@@ -48,10 +48,10 @@ public class PlayerProperties : MonoBehaviourPun
         switch (bdL)
         {
             case 0: return 500.ToString();
-            case 1: return 1500.ToString();
-            case 2: return 4500.ToString();
-            case 3: return 13500.ToString();
-            case 4: return 40500.ToString();
+            case 1: return 5000.ToString();
+            case 2: return 50000.ToString();
+            case 3: return 500000.ToString();
+            case 4: return 5000000.ToString();
             case 5: return "Max";
         }
         return "what";
