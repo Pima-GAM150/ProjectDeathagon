@@ -184,6 +184,9 @@ MonoBehaviour:
   HitPoints: 50
   speed: 2
   worth: 10
+  damage: 5
+  attackSpeed: 2
+  attack: 0
   enemyColors:
   - {r: 0.9843138, g: 0.015686275, b: 0.039215688, a: 0}
   - {r: 0, g: 0.2901961, b: 1, a: 0}

@@ -82,27 +82,19 @@ public class NetworkedObjectsH : MonoBehaviourPun
         }
     }
 
-    public void RemoveMe(PhotonView player)
-    {
-        int counter = 0;
-        foreach (PhotonView Player in players)
-        {
-            if (player == Player)
-            {
-                ShiftCreepList(counter);
-                players.Remove(player);
-            }
-            counter++;
-        }
-    }
-
-    private void ShiftCreepList( int start ) { creepList.RemoveAt(start); }
+    public void RemoveMe(int playerIndex) { if (PhotonNetwork.IsMasterClient) { creepList.RemoveAt(playerIndex); players.RemoveAt(playerIndex); } }
 
     [PunRPC]
-    public void AddToMasterCreepList(int playerNumber,int creep)
+    public void AddToMasterCreepList(int playerNumber,int creep) { creepList[playerNumber].Add(creep); }
+
+    [PunRPC]
+    public void DestroyMePlayer(int playerIndex)
     {
-        Debug.Log("Added");
-        creepList[playerNumber].Add(creep);
+        for (int i = UnitSpawner.find.aliveCreeps[playerIndex].Count - 1; i >= 0; i--)
+        {
+            UnitSpawner.find.aliveCreeps[playerIndex][i].RPC("DestroyMe", RpcTarget.MasterClient,playerIndex);
+        }
+        RemoveMe(playerIndex);
     }
 
     public void SyncWaveTimer(int timer)

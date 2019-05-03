@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     public Text buttonTextFireRate;
     public Text buttonTextBulletDamage;
     public Text buttonTextAmmoCapacity;
+    public Text textWin;
 
     public float fireRate;
     public float bulletDamage;
@@ -54,6 +55,9 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
 
     public GameObject Bullet;
     private GameObject bullet;
+
+    public Canvas gameUI;
+    public Canvas spectatorUI;
 
     public bool testing;
 
@@ -95,6 +99,7 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
         playerNumberText.text = "Player: " + playerNumber;
         if (photonView.IsMine)
         {
+            if (NetworkedObjectsH.find.waveNumber > 2 && NetworkedObjectsH.find.players.Count == 1) textWin.enabled = true;
             if (reloadSpeed >= 0) reloadSpeed -= Time.deltaTime;
             if (reloadSpeed < 0) reloadShoot = true;
             if (fireRate >= 0) fireRate -= Time.deltaTime;
@@ -170,7 +175,16 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
             else if (ammoCapacity == 0) ReloadGun();
 
             SetUIText();
-            if (playerHealth <= 0) photonView.RPC("DestroyMePlayer", RpcTarget.All);
+            if (playerHealth <= 0)
+            {
+                gameUI.gameObject.SetActive(false);
+                spectatorUI.gameObject.SetActive(true);
+                agent.enabled = false;
+                GetComponent<Spectator>().enabled = true;
+                GetComponent<Spectator>().Warp();
+                Cursor.lockState = CursorLockMode.None;
+                this.photonView.RPC("DestroyMe", RpcTarget.All);
+            }
         }
         else
         {
@@ -244,10 +258,15 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     }
 
     [PunRPC]
-    public void DestroyMePlayer()
+    public void DestroyMe()
+    {   
+        NetworkedObjectsH.find.photonView.RPC("DestroyMePlayer", RpcTarget.MasterClient, playerNumber - 1);
+        GetComponent<PlayerController>().enabled = false;
+    }
+
+    [PunRPC]
+    public void PhotonDestroy()
     {
-        foreach (PhotonView unit in UnitSpawner.find.aliveCreeps[playerNumber - 1]) unit.RPC("DestroyMe", RpcTarget.MasterClient);
-        NetworkedObjectsH.find.RemoveMe(this.photonView);
         PhotonNetwork.Destroy(this.gameObject);
     }
 
@@ -256,18 +275,6 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     {
         transform.position = position;
         agent.Warp(position);
-    }
-
-    [PunRPC]
-    public void SpawnCreeps(string creepListJson, int playerNumb)
-    {
-        UnitSpawner.find.SpawnCreeps( CreepList.CreepsToSpawnFromJson(creepListJson), playerNumb);
-    }
-
-    [PunRPC]
-    public void AddToMasterCreepList(int playerNumb, int creep)
-    {
-        NetworkedObjectsH.find.AddToMasterCreepList(playerNumb, creep);
     }
 
     [PunRPC]

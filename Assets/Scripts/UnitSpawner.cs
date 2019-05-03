@@ -22,6 +22,8 @@ public class UnitSpawner : MonoBehaviour
     public List<BoxCollider> unitSpawnsEight;
     public List<List<BoxCollider>> arenaSpawns = new List<List<BoxCollider>>();
 
+    public List<BoxCollider> spectatorSpawns;
+
     public static UnitSpawner find;
     // singleton assignment
     void Awake()

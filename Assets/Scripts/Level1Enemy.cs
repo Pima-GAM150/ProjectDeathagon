@@ -66,8 +66,7 @@ public class Level1Enemy : MonoBehaviourPun , IPunObservable, IPunInstantiateMag
     public void SetDestination(int destination)
     {
         Destination = NetworkedObjectsH.find.players[destination].transform;
-        UnitSpawner.find.aliveCreeps[destination].Add(this.photonView);
-        
+        UnitSpawner.find.aliveCreeps[destination].Add(this.photonView); 
     }
 
     void OnTriggerEnter(Collider col)
@@ -77,7 +76,7 @@ public class Level1Enemy : MonoBehaviourPun , IPunObservable, IPunInstantiateMag
         if (HitPoints <= 0)
         {
             Destination.GetComponent<PlayerProperties>().KillEnemy(10);
-            photonView.RPC("DestroyMe", RpcTarget.MasterClient);
+            photonView.RPC("DestroyMe", RpcTarget.MasterClient,Destination.GetComponent<PlayerController>().playerNumber-1);
         }
     }
 
@@ -116,9 +115,10 @@ public class Level1Enemy : MonoBehaviourPun , IPunObservable, IPunInstantiateMag
     }
 
     [PunRPC]
-    public void DestroyMe()
+    public void DestroyMe(int index)
     {
-        UnitSpawner.find.aliveCreeps[Destination.GetComponent<PlayerController>().playerNumber - 1].Remove(this.photonView);
+        
+        UnitSpawner.find.aliveCreeps[index].Remove(this.photonView);
         PhotonNetwork.Destroy(this.gameObject);
     }
 }
