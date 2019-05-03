@@ -258,9 +258,6 @@ public class PlayerController : MonoBehaviourPun, IPunObservable
     }
 
     [PunRPC]
-    public void ShiftPlayerNumber() { playerNumber--; }
-
-    [PunRPC]
     public void DestroyMe()
     {   
         NetworkedObjectsH.find.photonView.RPC("DestroyMePlayer", RpcTarget.MasterClient, playerNumber - 1);

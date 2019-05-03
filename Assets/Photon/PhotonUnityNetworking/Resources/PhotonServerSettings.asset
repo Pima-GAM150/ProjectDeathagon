@@ -46,5 +46,6 @@ MonoBehaviour:
   - DestroyMePlayer
   - TakeDamage
   - PhotonDestroy
+  - ShiftPlayerNumber
   DisableAutoOpenWizard: 1
   ShowSettings: 1

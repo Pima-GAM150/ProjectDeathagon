@@ -88,7 +88,7 @@ public class NetworkedObjectsH : MonoBehaviourPun
         if (PhotonNetwork.IsMasterClient) { creepList.RemoveAt(playerIndex); players.RemoveAt(playerIndex); }
         for (int i = playerIndex+1; i < players.Count; i++)
         {
-            players[i].RPC("ShiftPlayerNumber", RpcTarget.All);
+            players[i].RPC("SetPlayerNumber", RpcTarget.All,-1);
         }
     }
 

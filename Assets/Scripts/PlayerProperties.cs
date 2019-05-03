@@ -265,8 +265,8 @@ public class PlayerProperties : MonoBehaviourPun
     [PunRPC]
     public void SetPlayerNumber(int number)
     {
-        Debug.Log(number);
-        playerNumber = number;
+        if (number == -1) playerNumber--;
+        else playerNumber = number;
         GetComponent<PlayerController>().playerNumber = number;
     }
 }
