@@ -82,7 +82,15 @@ public class NetworkedObjectsH : MonoBehaviourPun
         }
     }
 
-    public void RemoveMe(int playerIndex) { if (PhotonNetwork.IsMasterClient) { creepList.RemoveAt(playerIndex); players.RemoveAt(playerIndex); } }
+    public void RemoveMe(int playerIndex)
+
+    {
+        if (PhotonNetwork.IsMasterClient) { creepList.RemoveAt(playerIndex); players.RemoveAt(playerIndex); }
+        for (int i = playerIndex+1; i < players.Count; i++)
+        {
+            players[i].RPC("ShiftPlayerNumber", RpcTarget.All);
+        }
+    }
 
     [PunRPC]
     public void AddToMasterCreepList(int playerNumber,int creep) { creepList[playerNumber].Add(creep); }
